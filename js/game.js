@@ -52,9 +52,11 @@ function creatCell() {
 }
 
 function addMines(board, level) {
+    var iNums = shuffle(creatNumsList(level.SIZE))
+    var jNums = shuffle(creatNumsList(level.SIZE))
     for (var i = 0; i < level.MINES; i++) {
-        var iIdx = getRandomInt(0, level.SIZE - 1)
-        var jIdx = getRandomInt(0, level.SIZE - 1)
+        var iIdx = drawNum(iNums)
+        var jIdx = drawNum(jNums)
         board[iIdx][jIdx].isMine = true
     }
     setMinesNegsCount(board)
@@ -62,26 +64,51 @@ function addMines(board, level) {
 
 // בודק שכנים של מוקשים
 function setMinesNegsCount(board) {
-    for (var I = 0; I < board.length; I++) {
-        for (var J = 0; J < board[0].length; J++) {
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
             var countNegs = 0
-            if (board[I][J].isMine) continue
-            // console.log('I', I, 'J', J);
-            for (var i = (I - 1); i <= (I + 1); i++) {
-                if (i < 0 || i >= board.length) continue
-                for (var j = (J - 1); j <= (J + 1); j++) {
-                    if (j < 0 || j >= board[0].length) continue
-                    if (i === I && j === J) continue
-                    if (board[i][j].isMine) countNegs++
-                }
+            if (board[i][j].isMine) continue
+            var negs = getNegs(board, i, j)
+            for (var I = 0; I < negs.length; I++) {
+
+                if (negs[I].isMine) countNegs++
             }
-            board[I][J].minesAroundCount = countNegs
+            board[i][j].minesAroundCount = countNegs
         }
 
     }
 }
 
+function getNegs(board, i, j) {
+    var negs = []
+    for (var I = (i - 1); I <= (i + 1); I++) {
+        if (I < 0 || I >= board.length) continue
+        for (var J = (j - 1); J <= (j + 1); J++) {
+            if (J < 0 || J >= board[0].length) continue
+            if (i === I && j === J) continue
+            var neg = board[I][J]
+            negs.push(neg)
+        }
+    }
+    return negs
+}
 
+function changeLevel(elCell) {
+    var size = elCell.innerText
+    gLevel.SIZE = +size
+    switch (+size) {
+        case 4:
+            gLevel.MINES = 2
+            break;
+        case 8:
+            gLevel.MINES = 12
+            break;
+        case 12:
+            gLevel.MINES = 30
+            break;
+    }
+    initGame()
+}
 
 // מרנדר לוח
 function renderBoard(board, selector) {
@@ -99,10 +126,7 @@ function renderBoard(board, selector) {
 
     var elContainer = document.querySelector(selector);
     elContainer.innerHTML = strHTML;
-    // console.log(elContainer);
 }
-
-
 
 // לחיצה על תא
 function cellClicked(elCell, i, j) {
@@ -114,15 +138,33 @@ function cellClicked(elCell, i, j) {
         cell = currCell.minesAroundCount
     } else {
         cell = ` `
-        expandShown(gBoard, elCell, i, j)
+        expandShown(gBoard, i, j)
     }
     currCell.isShown = true
     elCell.innerHTML = `<div class="clicked">${cell}</div>`;
 }
 
 // פתיחת תאים שכנים
-function expandShown(board, elCell, i, j) {
-    console.log('hi');
+function expandShown(board, i, j) {
+    for (var I = (i - 1); I <= (i + 1); I++) {
+        if (I < 0 || I >= board.length) continue
+        for (var J = (j - 1); J <= (j + 1); J++) {
+            if (J < 0 || J >= board[0].length) continue
+            if (i === I && j === J) continue
+            if (board[I][J].isMine) continue
+            board[I][J].isShown = true
+            var cell = (board[I][J].minesAroundCount) ? board[I][J].minesAroundCount : ` `;
+            var location = {
+                i: I,
+                j: J
+            }
+            renderCell(location, getCellHTML(cell))
+        }
+    }
+}
+
+function getCellHTML(cell) {
+    return `<div class="clicked">${cell}</div>`
 }
 
 // לחיצה ימנית על תא-מסמן
