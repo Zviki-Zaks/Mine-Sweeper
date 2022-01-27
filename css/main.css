@@ -2,24 +2,86 @@
     text-align: center;
 }
 
-tbody {
-    width: 20px;
-    height: 200px;
-    background-color: gray;
+body {
+    background-color: rgba(145, 129, 129, 0.993);
 }
 
+.game {
+    width: 450px;
+    height: 450px;
+    margin: auto;
+}
+
+.timer {
+    width: 100px;
+    height: 20px;
+    background-color: aliceblue;
+    border: 2px solid black;
+    display: inline;
+}
+.lives {
+    width: 150px;
+    height: 40px;
+    background-color: aliceblue;
+    border: 2px solid black;
+    display: none;
+}
+
+.board-container{
+    width: 340px;
+    height: 340px;
+    background-color: gray;
+    margin: auto;
+    margin-top: 20px;
+
+ } 
+
+table{
+    width: 340px;
+    height: 340px;
+   } 
+
+tbody {
+    margin: auto;
+    }
+
 .cell {
-    width: 50px;
-    height: 50px;
+    width: 25%;
+    height: 25%;
     background-color: rgb(71, 70, 70);
+    margin: auto;
+}
+
+.big-cell {
+    width: 25%;
+    height: 25%;
+    background-color: rgb(71, 70, 70);
+    margin: auto;
+}
+
+.medium-cell{
+    width: 12.5%;
+    height: 12.5%;
+    background-color: rgb(71, 70, 70);
+    margin: auto;
+}
+
+.small-cell{
+    width: 8.333%;
+    height: 8.333%;
+    background-color: rgb(71, 70, 70);
+    margin: auto;
 }
 
 .clicked {
-    width: 50px;
-    height: 50px;
     background-color: rgb(151, 147, 147);
 }
 
+.marked {
+    background-color: rgb(71, 70, 70);
+    background-image: url("/images/flag.png");
+    background-size:cover;
+}
 
 /* .test {
     width: 50px;

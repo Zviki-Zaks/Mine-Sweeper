@@ -42,7 +42,6 @@ function drawNum(nums) {
     return nums.shift()
 }
 
-// console.log('gNums:', gNums)
 function shuffle(items) {
     var randIdx, keep, i;
     for (i = items.length - 1; i > 0; i--) {
@@ -63,5 +62,12 @@ function creatNumsList(size){
     return nums
 }
 
+function pad(val) {
+    var valString = val + "";
+    return valString.length === 1 ? "0" + valString : valString
+}
 
-
+function playSound() {
+    var audio = new Audio('sound/v.mp3');
+    audio.play();
+}
