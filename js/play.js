@@ -7,41 +7,52 @@ function cellClicked(elCell, i, j) {
     var currCell = gBoard[i][j]
     if (currCell.isMarked) return
     if (currCell.isMine) {
-        var cell = MINE
         currCell.isShown = true
         gGame.mineExplodedCount++
+        elCell.classList.add('mine')
     } else if (currCell.minesAroundCount) {
-        cell = currCell.minesAroundCount
+        var cell = currCell.minesAroundCount
+        renderCell(i, j, cell)
     } else {
         cell = ` `
         expandShown(gBoard, i, j)
+        renderCell(i, j, cell)
     }
     currCell.isShown = true
     gGame.shownCount++
-    renderCell(i,j, cell)
     checkGameOver()
 }
 
 
-function expandShown(board, i, j) {
-    for (var I = (i - 1); I <= (i + 1); I++) {
-        if (I < 0 || I >= board.length) continue
-        for (var J = (j - 1); J <= (j + 1); J++) {
-            if (J < 0 || J >= board[0].length) continue
-            if (i === I && j === J) continue
-            if (board[I][J].isMine) continue
-            if (board[I][J].isShown) continue
-            if (board[I][J].isMarked) continue
-            board[I][J].isShown = true
-            gGame.shownCount++
-            var cell = (board[I][J].minesAroundCount) ? board[I][J].minesAroundCount : ` `;
-            renderCell(I,J, cell)
+function expandShown(board, iIdx, jIdx) {
+    for (var i = (iIdx - 1); i <= (iIdx + 1); i++) {
+        if (i < 0 || i >= board.length) continue
+        for (var j = (jIdx - 1); j <= (jIdx + 1); j++) {
+            if (j < 0 || j >= board[0].length) continue
+            if (iIdx === i && jIdx === j) continue
+            if (board[i][j].isMine) continue
+            if (board[i][j].isShown) continue
+            if (board[i][j].isMarked) continue
+            if (board[i][j].minesAroundCount){
+                
+                board[i][j].isShown = true
+                gGame.shownCount++
+                var cell = (board[i][j].minesAroundCount) ? board[i][j].minesAroundCount : ` `;
+                renderCell(i, j, cell)
+                
+            } else{
+                board[i][j].isShown = true
+                gGame.shownCount++
+                expandShown(board, i, j)
+                var cell = (board[i][j].minesAroundCount) ? board[i][j].minesAroundCount : ` `;
+                renderCell(i, j, cell)
+            }
         }
     }
     checkGameOver()
 }
 
-function renderCell(i,j, value) {
+function renderCell(i, j, value) {
     var elCell = document.querySelector(`.cell-${i}-${j}`);
     elCell.innerText = value
     elCell.classList.add('clicked')
@@ -68,32 +79,28 @@ function cellMarked(elCell, i, j) {
 function checkGameOver() {
     var elRestater = document.querySelector('.restarter')
     if (!gGame.shownCount) return
-    if (gLevel.SIZE === 4) {
-        if (gGame.mineExplodedCount === 1) {
-            gGame.emoji = '🙈'
-            openAllMines()
-            gameOver(elRestater, gGame.emoji)
-        } else if (gGame.shownCount + gGame.markedCount === Math.pow(gLevel.SIZE, 2) && gGame.mineExplodedCount < 3) {
-            gGame.emoji = '🥳'
-            gameOver(elRestater, gGame.emoji)
-        }
-        return
-    }
-    if (gGame.shownCount + gGame.markedCount === Math.pow(gLevel.SIZE, 2) && gGame.mineExplodedCount < 3) {
+    if (gGame.shownCount + gGame.markedCount === Math.pow(gLevel.SIZE, 2) && gGame.markedCount===gLevel.MINES) {
         gGame.emoji = '🥳'
         gameOver(elRestater, gGame.emoji)
         return
     }
+    if (gLevel.SIZE === 4) {
+        if (gGame.mineExplodedCount === 1) {
+            gGame.emoji = '😵'
+            openAllMines()
+            gameOver(elRestater, gGame.emoji)
+        } 
+        return
+    }
     if (gGame.mineExplodedCount === 1) {
-        gGame.emoji = '🙊'
         renderLives(2)
+        return
 
     } else if (gGame.mineExplodedCount === 2) {
-        gGame.emoji = '🙉'
         renderLives(1)
-
+        return
     } else if (gGame.mineExplodedCount === 3) {
-        gGame.emoji = '🙈'
+        gGame.emoji = '😵'
         openAllMines()
         renderLives()
         gameOver(elRestater, gGame.emoji)
@@ -115,8 +122,8 @@ function openAllMines() {
             if (gBoard[i][j].isShown) continue
             if (gBoard[i][j].isMarked) continue
             if (gBoard[i][j].isMine) {
-                var cell = MINE
-                renderCell(i,j, cell)
+                var elCell = document.querySelector(`.cell-${i}-${j}`)
+                elCell.classList.add('mine')
             }
         }
     }

@@ -4,6 +4,7 @@
 
 body {
     background-color: rgba(145, 129, 129, 0.993);
+    font-weight: bold;
 }
 
 h1 {
@@ -12,7 +13,8 @@ h1 {
     padding: 15px;
     margin-top: 0px;
     margin: auto;
-
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
 }
 
 .game {
@@ -25,8 +27,10 @@ h1 {
     padding: 5px;
     border-radius: 5px;
     margin-top:10px;
-
+    text-shadow: 2px 2px 5px brown;
     background-color: rgb(102, 79, 79);
+    font-weight: bold;
+   
 }
 
 .restarter{
@@ -97,7 +101,8 @@ tbody {
     height: 8.333%;
     background-color: rgb(71, 70, 70);
     margin: auto;
-    font-size: 0.8em;
+    font-size: 1em;
+    font-weight: bolder;
 }
 
 .clicked {
@@ -106,7 +111,13 @@ tbody {
 
 .marked {
     background-color: rgb(105, 80, 80);
-    background-image: url("/images/flag.png");
+    background-image: url("../images/red flag2.png");
+    background-size: cover;
+}
+
+.mine {
+    background-color: rgb(151, 147, 147);
+    background-image: url("../images/mine.png");
     background-size: cover;
 }
 

@@ -1,7 +1,5 @@
 'use strict'
 
-const MINE = '💥'
-const FLAG = '🚩'
 
 var gGame = {
     isOn: true,
@@ -181,7 +179,7 @@ function setTime() {
 }
 
 function renderLives(count) {
-    var value = (count === 3) ? `🧡💛💚` : (count === 2) ? `🧡💛` : (count === 1) ? ` 🧡` : ` `;
+    var value = (count === 3) ? `❤❤❤` : (count === 2) ? `❤❤ 🙊` : (count === 1) ? `❤ 🙉🙊` : ` 🙈🙉🙊`;
     var elLives = document.querySelector('.lives')
     elLives.style.display = 'inline-block'
     elLives.querySelector('span').innerText = `${value}`
