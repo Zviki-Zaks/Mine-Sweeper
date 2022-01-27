@@ -18,7 +18,7 @@ function cellClicked(elCell, i, j) {
     }
     currCell.isShown = true
     gGame.shownCount++
-    elCell.innerHTML = `<div class="clicked">${cell}</div>`;
+    renderCell(i,j, cell)
     checkGameOver()
 }
 
@@ -35,22 +35,23 @@ function expandShown(board, i, j) {
             board[I][J].isShown = true
             gGame.shownCount++
             var cell = (board[I][J].minesAroundCount) ? board[I][J].minesAroundCount : ` `;
-            var location = { i: I, j: J }
-            renderCell(location, getCellHTML(cell))
+            renderCell(I,J, cell)
         }
     }
     checkGameOver()
 }
 
-function getCellHTML(cell) {
-    return `<div class="clicked">${cell}</div>`
+function renderCell(i,j, value) {
+    var elCell = document.querySelector(`.cell-${i}-${j}`);
+    elCell.innerText = value
+    elCell.classList.add('clicked')
 }
 
 
 function cellMarked(elCell, i, j) {
     window.event.preventDefault()
     if (!gGame.isOn) return
-    isFirstClick()
+    isFirstClick(i, j)
     if (gBoard[i][j].isShown) return
     if (!gBoard[i][j].isMarked) {
         gBoard[i][j].isMarked = true
@@ -68,10 +69,10 @@ function checkGameOver() {
     var elRestater = document.querySelector('.restarter')
     if (!gGame.shownCount) return
     if (gLevel.SIZE === 4) {
-       if (gGame.mineExplodedCount === 1) {
-           gGame.emoji = '🙈'
-           openAllMines()
-         gameOver(elRestater, gGame.emoji)
+        if (gGame.mineExplodedCount === 1) {
+            gGame.emoji = '🙈'
+            openAllMines()
+            gameOver(elRestater, gGame.emoji)
         } else if (gGame.shownCount + gGame.markedCount === Math.pow(gLevel.SIZE, 2) && gGame.mineExplodedCount < 3) {
             gGame.emoji = '🥳'
             gameOver(elRestater, gGame.emoji)
@@ -86,7 +87,7 @@ function checkGameOver() {
     if (gGame.mineExplodedCount === 1) {
         gGame.emoji = '🙊'
         renderLives(2)
-       
+
     } else if (gGame.mineExplodedCount === 2) {
         gGame.emoji = '🙉'
         renderLives(1)
@@ -115,8 +116,7 @@ function openAllMines() {
             if (gBoard[i][j].isMarked) continue
             if (gBoard[i][j].isMine) {
                 var cell = MINE
-                var location = { i, j }
-                renderCell(location, getCellHTML(cell))
+                renderCell(i,j, cell)
             }
         }
     }

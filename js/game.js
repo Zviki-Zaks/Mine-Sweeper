@@ -148,7 +148,7 @@ function renderBoard(board, selector) {
         strHTML += `</tr>`
     }
     strHTML += `</tbody></table>`;
-
+    // console.log(strHTML);
     var elContainer = document.querySelector(selector);
     elContainer.innerHTML = strHTML;
 }
