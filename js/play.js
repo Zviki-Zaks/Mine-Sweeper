@@ -4,6 +4,7 @@
 function cellClicked(elCell, i, j) {
     if (!gGame.isOn) return
     isFirstClick(i, j)
+    if (gGame.isHintMode) return getHint( i, j)
     var currCell = gBoard[i][j]
     if (currCell.isMarked) return
     if (currCell.isMine) {
@@ -11,14 +12,15 @@ function cellClicked(elCell, i, j) {
         gGame.mineExplodedCount++
         elCell.classList.add('mine')
     } else if (currCell.minesAroundCount) {
+        currCell.isShown = true
         var cell = currCell.minesAroundCount
         renderCell(i, j, cell)
     } else {
         cell = ` `
+        currCell.isShown = true
         expandShown(gBoard, i, j)
         renderCell(i, j, cell)
     }
-    currCell.isShown = true
     gGame.shownCount++
     checkGameOver()
 }
@@ -33,18 +35,18 @@ function expandShown(board, iIdx, jIdx) {
             if (board[i][j].isMine) continue
             if (board[i][j].isShown) continue
             if (board[i][j].isMarked) continue
-            if (board[i][j].minesAroundCount){
-                
+            if (board[i][j].minesAroundCount) {
+
                 board[i][j].isShown = true
                 gGame.shownCount++
-                var cell = (board[i][j].minesAroundCount) ? board[i][j].minesAroundCount : ` `;
+                var cell = board[i][j].minesAroundCount
                 renderCell(i, j, cell)
-                
-            } else{
+
+            } else {
                 board[i][j].isShown = true
                 gGame.shownCount++
                 expandShown(board, i, j)
-                var cell = (board[i][j].minesAroundCount) ? board[i][j].minesAroundCount : ` `;
+                var cell = ` `;
                 renderCell(i, j, cell)
             }
         }
@@ -79,7 +81,7 @@ function cellMarked(elCell, i, j) {
 function checkGameOver() {
     var elRestater = document.querySelector('.restarter')
     if (!gGame.shownCount) return
-    if (gGame.shownCount + gGame.markedCount === Math.pow(gLevel.SIZE, 2) && gGame.markedCount===gLevel.MINES) {
+    if (gGame.shownCount + gGame.markedCount === Math.pow(gLevel.SIZE, 2) && gGame.markedCount === gLevel.MINES) {
         gGame.emoji = '🥳'
         gameOver(elRestater, gGame.emoji)
         return
@@ -89,7 +91,7 @@ function checkGameOver() {
             gGame.emoji = '😵'
             openAllMines()
             gameOver(elRestater, gGame.emoji)
-        } 
+        }
         return
     }
     if (gGame.mineExplodedCount === 1) {
@@ -127,4 +129,54 @@ function openAllMines() {
             }
         }
     }
+}
+
+
+function isHintMode(elBnt) {
+    if (!gGame.isOn) return
+    elBnt.classList.add('selected-hint')
+    gGame.isHintMode = true
+
+}
+
+function getHint( idx, jIdx) {
+    var copyBoard = copyMat(gBoard)
+    var shownHintCells = []
+    for (var i = (idx - 1); i <= (idx + 1); i++) {
+        if (i < 0 || i >= copyBoard.length) continue
+        for (var j = (jIdx - 1); j <= (jIdx + 1); j++) {
+            if (j < 0 || j >= copyBoard[0].length) continue
+            var currCell = copyBoard[i][j]
+            if (currCell.isShown || currCell.isMarked) continue
+            if (currCell.isMine) {
+                var elCurrCell = document.querySelector(`.cell-${i}-${j}`)
+                elCurrCell.classList.add('mine')
+            } else if (currCell.minesAroundCount) {
+                var cell = currCell.minesAroundCount
+                renderCell(i, j, cell)
+            } else {
+                cell = ` `
+                renderCell(i, j, cell)
+            }
+            currCell.i = i
+            currCell.j = j
+            shownHintCells.push(currCell)
+        }
+    }
+    setTimeout(() => { hideHint(shownHintCells) }, 1000)
+}
+
+
+function hideHint(cells) {
+    for (var i = 0; i < cells.length; i++) {
+        var currCell = cells[i]
+        var elCurrCell = document.querySelector(`.cell-${currCell.i}-${currCell.j}`)
+        elCurrCell.innerText = ' '
+        elCurrCell.classList.remove('mine')
+        elCurrCell.classList.remove('clicked')
+    }
+    gGame.isHintMode = false
+    var elBnt = document.querySelector('.selected-hint')
+    elBnt.classList.remove('selected-hint')
+    elBnt.style.display = 'none'
 }

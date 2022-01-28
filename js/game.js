@@ -6,7 +6,8 @@ var gGame = {
     shownCount: 0,
     markedCount: 0,
     mineExplodedCount: 0,
-    emoji: '😀'
+    emoji: '😀',
+    isHintMode: false
 }
 var gLevel = {
     SIZE: 4,
@@ -34,7 +35,10 @@ function initGame() {
     gBoard = buildBoard(gLevel);
     renderBoard(gBoard, '.board-container')
     gIsFirstClick = true
-
+    var elBtns = document.querySelectorAll('.hints span')
+    for (var i = 0; i < elBtns.length; i++) {
+        elBtns[i].style.display = 'inline-block'
+    }
 }
 
 function buildBoard(level) {
@@ -166,8 +170,8 @@ function getClassCell(boardSize) {
 function restart() {
     gGame.emoji = '😀'
     document.querySelector('.restarter').innerText = gGame.emoji
-    changeLevel(4)
     clearInterval(gTimer.intervalId)
+    if (gLevel.SIZE === 8||gLevel.SIZE===12) renderLives(3)
     initGame()
 }
 

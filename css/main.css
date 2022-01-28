@@ -8,7 +8,7 @@ body {
 }
 
 h1 {
-    width: 340px;
+    width: 360px;
     background-color: rgb(102, 79, 79);
     padding: 15px;
     margin-top: 0px;
@@ -121,16 +121,58 @@ tbody {
     background-size: cover;
 }
 
+.down {
+    background-color: rgb(102, 79, 79);
+    width: 360px;
+    height: 60px;
+    padding: 15px;
+    /* border: 1px solid black; */
+    /* border-radius: 7px; */
+    margin: auto;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+
+}
+
+.hints {
+    width: 150px;
+    height: 40px;
+    padding: 10px;
+    display: inline-block;
+    
+    margin-left: 10px;
+    text-align: left;
+    position: relative;
+}
+
+.hints span{
+    width: 25px;
+    height: 30px;
+    background-image: url("../images/hint.png");
+    background-size: cover;
+    border-radius: 50%;
+    /* padding: 10px; */
+    display: inline-block;
+    /* margin: none; */
+}
+
+.selected-hint {
+    background-color: rgba(255, 255, 0, 0.164);
+    
+}
+
+.lives-conteiner {
+    width: 150px;
+    height: 30px;
+    display: inline-block;
+}
+
 .lives {
     width: 150px;
     height: 30px;
-    background-color: rgb(102, 79, 79);
-    font-size: 1.2em;
     padding: 10px;
-    border: 1px solid black;
-    border-radius: 7px;
-    margin-bottom: 30px;
     display: none;
+    text-align: left;
 }
 
 footer {

@@ -12,24 +12,36 @@
 <body onload="initGame()">
     <h1>My Mine Sweeper</h1>
     <div class="game">
+
         <div class="hader">
+
             <button class="level" onclick="changeLevel(4)">Beginner</button>
             <button class="level" onclick="changeLevel(8)">Medium</button>
             <button class="level" onclick="changeLevel(12)">Expert</button>
             <br>
+
             <button class="restarter" onclick="restart()">😀</button>
             <br>
+
             <div class="timer">
                 <label id="minutes">00</label><span>:</span><label id="seconds">00</label>
             </div>
-            
-        </div>
-        <div class="board-container"></div>
-    </div>
-    
-    <div class="lives">Lives: <span></span></div>
 
-        <footer>Zviki Zaks </footer>
+        </div>
+
+        <div class="board-container"></div>
+
+    </div>
+
+    <div class="down">
+
+        <div class="hints">Hints: <span onclick="isHintMode(this)"></span ><span onclick="isHintMode(this)"></span><span onclick="isHintMode(this)"></span> </div>
+        
+        <div class="lives-conteiner"> <div class="lives">Lives: <span></span></div> </div>
+
+    </div>
+
+    <footer>Zviki Zaks </footer>
 
     <script src="js/util.js"></script>
     <script src="js/play.js"></script>
@@ -37,4 +49,3 @@
 </body>
 
 </html>
-
