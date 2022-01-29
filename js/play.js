@@ -11,6 +11,9 @@ function cellClicked(elCell, i, j) {
         currCell.isShown = true
         gGame.mineExplodedCount++
         elCell.classList.add('mine')
+
+        if (gGame.isSafeClickMode) gGame.mineExplodedCount--
+
     } else if (currCell.minesAroundCount) {
         currCell.isShown = true
         var cell = currCell.minesAroundCount
@@ -22,6 +25,7 @@ function cellClicked(elCell, i, j) {
         renderCell(i, j, cell)
     }
     gGame.shownCount++
+    if (gGame.isSafeClickMode) gGame.isSafeClickMode = false
     checkGameOver()
 }
 
@@ -140,13 +144,12 @@ function isHintMode(elBnt) {
 }
 
 function getHint( idx, jIdx) {
-    var copyBoard = copyMat(gBoard)
     var shownHintCells = []
     for (var i = (idx - 1); i <= (idx + 1); i++) {
-        if (i < 0 || i >= copyBoard.length) continue
+        if (i < 0 || i >= gBoard.length) continue
         for (var j = (jIdx - 1); j <= (jIdx + 1); j++) {
-            if (j < 0 || j >= copyBoard[0].length) continue
-            var currCell = copyBoard[i][j]
+            if (j < 0 || j >= gBoard[0].length) continue
+            var currCell = gBoard[i][j]
             if (currCell.isShown || currCell.isMarked) continue
             if (currCell.isMine) {
                 var elCurrCell = document.querySelector(`.cell-${i}-${j}`)
@@ -179,4 +182,12 @@ function hideHint(cells) {
     var elBnt = document.querySelector('.selected-hint')
     elBnt.classList.remove('selected-hint')
     elBnt.style.display = 'none'
+}
+
+
+function isSafeClickMode(){
+    gGame.safeClickCount++
+    if (gGame.safeClickCount>3) return
+    gGame.isSafeClickMode = true
+
 }

@@ -7,7 +7,9 @@ var gGame = {
     markedCount: 0,
     mineExplodedCount: 0,
     emoji: '😀',
-    isHintMode: false
+    isHintMode: false,
+    isSafeClickMode: false,
+    safeClickCount: 0
 }
 var gLevel = {
     SIZE: 4,
@@ -29,6 +31,8 @@ function initGame() {
     gGame.shownCount = 0;
     gGame.markedCount = 0;
     gGame.mineExplodedCount = 0;
+    gGame.isSafeClickMode = false
+    gGame.safeClickCount = 0
     gTimer.secsPassed = 0;
     gTimer.elMinutesLabel.innerHTML = '00'
     gTimer.elSecondsLabel.innerHTML = '00'

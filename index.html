@@ -14,17 +14,23 @@
     <div class="game">
 
         <div class="hader">
+            <div class="levels">
 
-            <button class="level" onclick="changeLevel(4)">Beginner</button>
-            <button class="level" onclick="changeLevel(8)">Medium</button>
-            <button class="level" onclick="changeLevel(12)">Expert</button>
+                <button class="level" onclick="changeLevel(4)">Beginner</button>
+                <button class="level" onclick="changeLevel(8)">Medium</button>
+                <button class="level" onclick="changeLevel(12)">Expert</button>
+            </div>
             <br>
+
+
 
             <button class="restarter" onclick="restart()">😀</button>
             <br>
 
             <div class="timer">
                 <label id="minutes">00</label><span>:</span><label id="seconds">00</label>
+
+
             </div>
 
         </div>
@@ -35,10 +41,15 @@
 
     <div class="down">
 
-        <div class="hints">Hints: <span onclick="isHintMode(this)"></span ><span onclick="isHintMode(this)"></span><span onclick="isHintMode(this)"></span> </div>
-        
-        <div class="lives-conteiner"> <div class="lives">Lives: <span></span></div> </div>
+        <div class="hints">Hints: <span onclick="isHintMode(this)"></span><span onclick="isHintMode(this)"></span><span
+                onclick="isHintMode(this)"></span> </div>
 
+        <div class="lives-conteiner">
+            <div class="lives">Lives: <span></span></div>
+
+        </div>
+        <button class="safe" onclick="isSafeClickMode()">Safe click</button>
+        <br>
     </div>
 
     <footer>Zviki Zaks </footer>
